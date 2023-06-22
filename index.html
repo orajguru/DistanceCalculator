@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Distance Calculator Demo</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    </script>
+    <script>
+        'use strict';
+        window.addEventListener('load', function () {
+            var form = document.getElementById('needs-validation');
+            form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                event.preventDefault();
+                form.classList.add('was-validated');
+            }, false);
+        }, false);
+
+    </script>
+
+    <style>
+        body {
+            background: #f5f5f5;
+        }
+
+        .rounded-lg {
+            border-radius: 1rem;
+        }
+
+        .nav-pills .nav-link {
+            color: #555;
+        }
+
+        .nav-pills .nav-link.active {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <!-- For demo purpose -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4">Distance Calculator</h1>
+            <p class="lead mb-0">Calculates the air distance between two locations</p>
+        </div>
+    </div>
+    <!-- End -->
+    <div class="row">
+        <div class="col-lg-7 mx-auto">
+            <div class="bg-white rounded-lg shadow-sm p-5">
+                <!-- Tabs List -->
+                <ul class="nav bg-light nav-pills rounded-pill nav-fill mb-3" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active rounded-pill" data-toggle="pill" href="#nav-tab-coord">
+                            <i class="fa fa-map-pin"></i>
+                            Co-ordinates
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link rounded-pill" data-toggle="pill" href="#nav-tab-add">
+                            <i class="fa fa-map"></i>
+                            Address
+                        </a>
+                    </li>
+                </ul>
+                <!-- End -->
+                <!-- Tabs Content -->
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="nav-tab-coord">
+                        <form id="needs-validation" novalidate role="form" >
+                            <div class="form-group">
+                                <label>Point A:</label>
+                                <input class="form-control" id="latA" max="90" min="-90" name="latA" placeholder="Point A Latitude(in &deg;)" required step="any" type="number">
+                                <div class="invalid-feedback">
+                                    Please enter latitude(Range: -90&deg; to 90&deg;)
+                                </div>
+                                <br>
+                                <input class="form-control" id="longA" max="180" min="-180" name="longA" placeholder="Point A Longitude(in &deg;)" required step="any" type="number">
+                                <div class="invalid-feedback">
+                                    Please enter longitude(Range: -180&deg; to 180&deg;)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Point B:</label>
+                                <input class="form-control" id="latB" max="90" min="-90" name="latB" placeholder="Point B Latitude(in &deg;)" required step="any" type="number">
+                                <div class="invalid-feedback">
+                                    Please enter latitude(Range: -90&deg; to 90&deg;)
+                                </div>
+                                <br>
+                                <input class="form-control" id="longB"  max="180" min="-180"name="longB" placeholder="Point B Longitude(in &deg;)" required step="any" type="number">
+                                <div class="invalid-feedback">
+                                    Please enter longitude(Range: -180&deg; to 180&deg;)
+                                </div>
+                            </div>
+                            <button class="subscribe btn btn-primary btn-block rounded-pill shadow-sm" onClick='document.getElementById("para1").innerHTML =  commonCalc(latA.value, longA.value, latB.value, longB.value)'
+                                    type="submit"> Calculate Distance  </button>
+                            <br>
+                            <div class="form-group">
+                                <p class ="alert alert-success" id="para1">Distance: 0.00km</p>
+                            </div>
+
+
+                        </form>
+                    </div>
+                    <!-- End -->
+
+                    <!-- Address info -->
+                    <div class="tab-pane fade" id="nav-tab-add">
+                        <form id="needs-validation-add" novalidate role="form" >
+                            <div class="form-group">
+                                <label>Point A:</label>
+                                <input class="form-control" id="addA" name="addA" placeholder="Point A Address" required type="text">
+                                <div class="invalid-feedback">
+                                    Please enter valid address
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <p class ="alert alert-success" id="coord1">Co-ordinates: </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Point B:</label>
+                                <input class="form-control" id="addB" name="addB" placeholder="Point B Address" required type="text">
+                                <div class="invalid-feedback">
+                                    Please enter valid address
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <p class ="alert alert-success" id="coord2">Co-ordinates: </p>
+                                </div>
+                            </div>
+                            <button class="subscribe btn btn-primary btn-block rounded-pill shadow-sm" id="addCLick" onclick='geocode()'
+                                    type="button"> Calculate Distance  </button>
+                            <br>
+                            <div class="form-group">
+                                <p class ="alert alert-success" id="para2">Distance: 0.00km</p>
+                            </div>
+
+
+                        </form>
+                    </div>
+                    <!-- End -->
+
+                </div>
+                <!-- End -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function geocode(){
+        var addA = document.getElementById("addA").value;
+        var addB = document.getElementById("addB").value;
+
+        var latA;
+        var latB;
+        var longA;
+        var longB;
+
+        if(addA){
+            await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${addA}&key=AIzaSyBN4bUf5K3u29P8fRAk7SpqfsgScwr7h7Q`)
+                .then((response) => {
+                    return response.json();
+                }).then(jsonData => {
+                    latA = jsonData.results[0].geometry.location.lat;
+                    longA = jsonData.results[0].geometry.location.lng;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+        if(addB){
+            await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${addB}&key=AIzaSyBN4bUf5K3u29P8fRAk7SpqfsgScwr7h7Q`)
+                .then((response) => {
+                    return response.json();
+                }).then(jsonData => {
+                    latB = jsonData.results[0].geometry.location.lat;
+                    longB = jsonData.results[0].geometry.location.lng;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+        var sol = "Distance: 0.00km"
+        if ( latA && latB && longA && longB) {
+            sol = commonCalc(latA, longA, latB, longB);
+            document.getElementById("coord1").innerHTML = "Co-ordinates: " + latA + "&deg;, " + longA + "&deg;";
+            document.getElementById("coord2").innerHTML = "Co-ordinates: " + latB + "&deg;, " + longB + "&deg;";
+        }
+        document.getElementById("para2").innerHTML = sol
+        return sol;
+    }
+
+    function commonCalc (ptALat, ptALng, ptBLat, ptBLng) {
+
+        long1 =  ptALng * Math.PI / 180;
+        long2 = ptBLng * Math.PI / 180;
+        lat1 = ptALat * Math.PI / 180;
+        lat2 = ptBLat * Math.PI / 180;
+
+        // Haversine formula
+        let dlon = long2 - long1;
+        let dlat = lat2 - lat1;
+        let a = Math.pow(Math.sin(dlat / 2), 2)
+            + Math.cos(lat1) * Math.cos(lat2)
+            * Math.pow(Math.sin(dlon / 2),2);
+
+        let c = 2 * Math.asin(Math.sqrt(a));
+
+        // Radius of earth in kilometers. Use 3956 for miles
+        let r = 6371;
+        var sol = "Distance: "+(c*r).toFixed(2)+"km"
+        return sol;
+    }
+
+</script>
+
+</body>
+</html>
