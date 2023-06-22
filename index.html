@@ -170,7 +170,7 @@
         var longB;
 
         if(addA){
-            await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${addA}&key=AIzaSyBN4bUf5K3u29P8fRAk7SpqfsgScwr7h7Q`)
+            await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${addA}&key=[YOUR_KEY_HERE]`)
                 .then((response) => {
                     return response.json();
                 }).then(jsonData => {
@@ -182,7 +182,7 @@
                 })
         }
         if(addB){
-            await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${addB}&key=AIzaSyBN4bUf5K3u29P8fRAk7SpqfsgScwr7h7Q`)
+            await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${addB}&key=[YOUR_KEY_HERE]`)
                 .then((response) => {
                     return response.json();
                 }).then(jsonData => {
